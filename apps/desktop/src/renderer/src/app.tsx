@@ -1,64 +1,57 @@
-import { useState } from "react";
-
-type TranslationResult =
-    | { type: "sentence"; translation: string }
-    | { type: "word"; translation: string; us: string; uk: string };
+import React from "react";
+import { ipc } from "./ipc";
+import { useQuery } from "@tanstack/react-query";
+import { ApiKeySettings } from "./api-key-settings";
 
 function App() {
-    const [input, setInput] = useState("");
-    const [translating, setTranslating] = useState(false);
-    const [result, setResult] = useState<TranslationResult | null>(null);
-    const [error, setError] = useState("");
+    const [txt, setTxt] = React.useState("");
+    const [submittedTxt, setSubmittedTxt] = React.useState("");
 
-    async function handleTranslate() {
-        const text = input.trim();
-        if (!text) return;
-        setTranslating(true);
-        setError("");
+    const { data: apiKey } = useQuery({
+        queryKey: ["get-api-key"],
+        queryFn: () => ipc.getApiKey(),
+    });
 
-        const res = await window.api.translate(text);
-        setTranslating(false);
-        if (!res.ok) return setError(res.error);
-        if (res.data) setResult(res.data);
-    }
+    const { data, status } = useQuery({
+        enabled: !!submittedTxt,
+        queryKey: ["translate", submittedTxt],
+        queryFn: () => ipc.translate(submittedTxt),
+    });
+
+    useExpansion();
+
+    console.log("data: ", data, "apiKey: ", apiKey);
 
     return (
-        <div style={{ padding: 16, maxWidth: 720, margin: "0 auto" }}>
-            <h2>Buzz Translator</h2>
+        <div>
+            <ApiKeySettings />
 
-            <textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) void handleTranslate();
-                }}
-                placeholder="Enter English text... (Cmd/Ctrl+Enter to translate)"
-                rows={4}
-                style={{ width: "100%", boxSizing: "border-box" }}
-            />
+            <hr />
 
-            <button
-                onClick={handleTranslate}
-                disabled={translating || !input.trim()}
-                style={{ marginTop: 8 }}
-            >
-                {translating ? "Translating..." : "Translate"}
-            </button>
+            <form onSubmit={onSubmit}>
+                <input
+                    disabled={!apiKey}
+                    value={txt}
+                    onChange={(event) => setTxt(event.target.value)}
+                />
+            </form>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            <hr />
 
-            {result && (
-                <div style={{ marginTop: 12 }}>
-                    <p>{result.translation}</p>
-                    {result.type === "word" && (
-                        <p>
-                            US {result.us} / UK {result.uk}
-                        </p>
-                    )}
-                </div>
-            )}
+            <pre>{JSON.stringify({ status, data }, null, 4)}</pre>
         </div>
     );
+
+    function onSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+        event.preventDefault();
+        setSubmittedTxt(txt);
+    }
+}
+
+function useExpansion() {
+    React.useEffect(() => {
+        void ipc.expandIsland();
+    }, []);
 }
 
 export { App };

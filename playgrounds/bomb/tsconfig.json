@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "lib": ["esnext", "dom"],
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "moduleDetection": "force",
+        "resolveJsonModule": true,
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "isolatedModules": true,
+        "jsx": "react-jsx",
+        "types": ["vite-plus/client", "node"],
+
+        "noEmit": true,
+        "declaration": true,
+        "incremental": true,
+        "skipLibCheck": true,
+        "removeComments": true,
+
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitOverride": true,
+        "noUncheckedIndexedAccess": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": true,
+        "erasableSyntaxOnly": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["notch"]
+}

@@ -1,6 +1,7 @@
-import { gateway } from "@ai-sdk/gateway";
+import { createGatewayProvider } from "@ai-sdk/gateway";
 import { Output, generateText } from "ai";
 import { z } from "zod";
+import { getApiKey } from "./store";
 
 const SYSTEM_PROMPT = `
 <task-context>
@@ -61,6 +62,8 @@ const translationSchema = z.discriminatedUnion("type", [
 type TranslationResult = z.infer<typeof translationSchema>;
 
 async function translate(input: string): Promise<TranslationResult | undefined> {
+    const gateway = createGatewayProvider({ apiKey: getApiKey() ?? undefined });
+
     const res = await generateText({
         model: gateway("google/gemini-2.5-flash-lite"),
         prompt: input,

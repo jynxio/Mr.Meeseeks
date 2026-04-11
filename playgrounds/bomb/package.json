@@ -1,0 +1,16 @@
+{
+    "name": "bomb",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "notch": "node ./notch/index.ts"
+    },
+    "dependencies": {
+        "arktype": "catalog:"
+    },
+    "devDependencies": {
+        "@types/node": "catalog:",
+        "type-fest": "catalog:",
+        "typescript": "catalog:"
+    }
+}

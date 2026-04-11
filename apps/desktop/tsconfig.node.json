@@ -1,6 +1,13 @@
 {
     "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
-    "include": ["electron.vite.config.*", "src/main/**/*", "src/preload/**/*", "reset.d.ts"],
+    "include": [
+        "electron.vite.config.*",
+        "src/main/**/*",
+        "src/preload/**/*",
+        "src/_utils/**/*",
+        "src/_consts/**/*",
+        "reset.d.ts"
+    ],
     "compilerOptions": {
         "composite": true,
         "types": ["electron-vite/node"],
@@ -11,6 +18,8 @@
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
         "erasableSyntaxOnly": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+
+        "paths": { "@/*": ["./src/*"] }
     }
 }

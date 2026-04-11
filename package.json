@@ -4,13 +4,19 @@
     "type": "module",
     "scripts": {
         "ready": "vp fmt && vp lint && vp run test -r && vp run build -r",
+        "bomb:notch": "vp run bomb#notch",
         "dev:app": "vp run app#dev",
         "dev:ui": "vp run ui-playground#dev",
         "build:ui": "vp run ui#build",
         "check:ui": "vp run ui#check",
         "prepare": "vp config"
     },
+    "dependencies": {
+        "@tanstack/react-query": "catalog:",
+        "arktype": "catalog:"
+    },
     "devDependencies": {
+        "type-fest": "catalog:",
         "vite-plus": "catalog:"
     },
     "engines": {

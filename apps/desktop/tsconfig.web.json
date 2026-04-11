@@ -4,6 +4,8 @@
         "src/renderer/**/*.ts",
         "src/renderer/**/*.tsx",
         "src/preload/*.d.ts",
+        "src/_utils/**/*",
+        "src/_consts/**/*",
         "reset.d.ts"
     ],
     "compilerOptions": {
@@ -17,6 +19,8 @@
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
         "erasableSyntaxOnly": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+
+        "paths": { "@/*": ["./src/*"] }
     }
 }
