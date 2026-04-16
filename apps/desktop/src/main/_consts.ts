@@ -1,0 +1,6 @@
+const STORE_KEY = {
+    USER_SETTINGS: "USER_SETTINGS",
+    TRANSLATION_WORDS: "TRANSLATION_WORDS",
+} as const;
+
+export { STORE_KEY };

@@ -3,9 +3,12 @@
     "include": [
         "src/renderer/**/*.ts",
         "src/renderer/**/*.tsx",
+        "src/preload/**/*",
         "src/preload/*.d.ts",
         "src/_utils/**/*",
         "src/_consts/**/*",
+        "src/_services/common/**/*",
+        "src/_services/renderer-process/**/*",
         "reset.d.ts"
     ],
     "compilerOptions": {

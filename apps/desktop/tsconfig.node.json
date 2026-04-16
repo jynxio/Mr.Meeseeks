@@ -4,8 +4,11 @@
         "electron.vite.config.*",
         "src/main/**/*",
         "src/preload/**/*",
+        "src/preload/*.d.ts",
         "src/_utils/**/*",
         "src/_consts/**/*",
+        "src/_services/common/**/*",
+        "src/_services/main-process/**/*",
         "reset.d.ts"
     ],
     "compilerOptions": {

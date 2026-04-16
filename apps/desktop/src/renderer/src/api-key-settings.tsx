@@ -1,47 +1,26 @@
 import React from "react";
-import { ipc } from "./ipc";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUserSettings } from "../_hooks/use-user-settings";
 
-function ApiKeySettings() {
-    const [password, setPassword] = React.useState("");
-    const queryClient = useQueryClient();
+function APIKeySettings() {
+    const [input, setInput] = React.useState("");
+    const { list, set, del } = useUserSettings();
 
-    const { mutate: save, isPending: isSaving } = useMutation({
-        mutationFn: () => ipc.setApiKey(password),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["get-api-key"] }),
-    });
-
-    const { mutate: del, isPending: isDeleting } = useMutation({
-        mutationFn: () => ipc.deleteApiKey(),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["get-api-key"] }),
-    });
-
-    const isDisabled = isSaving || isDeleting;
+    const isPending = list.isPending || set.isPending || del.isPending;
 
     return (
-        <div>
-            <form onSubmit={onSubmit}>
-                <input
-                    type="password"
-                    value={password}
-                    disabled={isDisabled}
-                    onChange={(event) => setPassword(event.target.value)}
-                />
-                <button type="submit" disabled={isDisabled}>
-                    Save
-                </button>
-            </form>
-
-            <button disabled={isDisabled} onClick={() => del()}>
-                Delete
-            </button>
-        </div>
+        <form onSubmit={onSubmit}>
+            <fieldset disabled={isPending}>
+                <input value={input} onChange={(event) => setInput(event.target.value)} />
+            </fieldset>
+        </form>
     );
 
     function onSubmit(event: React.SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
-        if (password.trim()) save();
+
+        if (input) set.mutate({ key: "apiKey", value: input });
+        else del.mutate("apiKey");
     }
 }
 
-export { ApiKeySettings };
+export { APIKeySettings };

@@ -1,9 +1,24 @@
-import { createGatewayProvider } from "@ai-sdk/gateway";
 import { Output, generateText } from "ai";
-import { z } from "zod";
-import { getApiKey } from "./store";
+import { translationSchema } from "@/_consts/schemas";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
-const SYSTEM_PROMPT = `
+const SYSTEM_PROMPT = createLLMSystemPrompt();
+
+async function translate(props: Record<"apiKey" | "sourceText", string>) {
+    // const gatewayProvider = createGatewayProvider({ apiKey: props.apiKey });
+    const googleProvider = createGoogleGenerativeAI({ apiKey: props.apiKey });
+    const res = await generateText({
+        system: SYSTEM_PROMPT,
+        prompt: props.sourceText,
+        model: googleProvider("gemini-3-flash-preview"),
+        output: Output.object({ schema: translationSchema }),
+    });
+
+    return res.output;
+}
+
+function createLLMSystemPrompt() {
+    return `
 <task-context>
 You are a professional English-to-Simplified-Chinese translator with expertise in both linguistic accuracy and phonetic notation. Your goal is to provide precise translations while adapting your output format based on whether the input is a sentence or a single word.
 </task-context>
@@ -43,36 +58,6 @@ You are a professional English-to-Simplified-Chinese translator with expertise i
 Translate the user's input from English to Simplified Chinese according to the rules above.
 </the-ask>
 `;
-
-const translationSchema = z.discriminatedUnion("type", [
-    z.object({
-        type: z.literal("sentence"),
-        translation: z.string().describe("Chinese translation"),
-    }),
-    z.object({
-        type: z.literal("word"),
-        translation: z
-            .string()
-            .describe("Chinese definitions, multiple meanings separated by semicolons"),
-        us: z.string().describe("American phonetic notation, format like [fəˈnetɪk]"),
-        uk: z.string().describe("British phonetic notation, format like [fəˈnetɪk]"),
-    }),
-]);
-
-type TranslationResult = z.infer<typeof translationSchema>;
-
-async function translate(input: string): Promise<TranslationResult | undefined> {
-    const gateway = createGatewayProvider({ apiKey: getApiKey() ?? undefined });
-
-    const res = await generateText({
-        model: gateway("google/gemini-2.5-flash-lite"),
-        prompt: input,
-        system: SYSTEM_PROMPT,
-        output: Output.object({ schema: translationSchema }),
-    });
-
-    return res.output;
 }
 
 export { translate };
-export type { TranslationResult };

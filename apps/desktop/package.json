@@ -19,12 +19,14 @@
     },
     "dependencies": {
         "@ai-sdk/gateway": "catalog:",
+        "@ai-sdk/google": "catalog:",
         "@electron-toolkit/preload": "catalog:",
         "@electron-toolkit/utils": "catalog:",
         "@tanstack/react-query": "catalog:",
         "ai": "catalog:",
         "arktype": "catalog:",
         "electron-store": "catalog:",
+        "nanoid": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
         "zod": "catalog:"

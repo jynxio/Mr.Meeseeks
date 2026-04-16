@@ -1,7 +1,7 @@
 import { app, BrowserWindow, globalShortcut, ipcMain } from "electron";
 import { electronApp, is, optimizer } from "@electron-toolkit/utils";
-import { registerIpcHandlers } from "./ipc";
-import { getIslandRect, toBounds } from "./_helpers/get-island-bounds";
+import { registerIPCHandler } from "./_ipc";
+import { getIslandRect, toBounds } from "./_helpers";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -20,7 +20,7 @@ function main() {
         electronApp.setAppUserModelId("com.buzz");
         app.on("browser-window-created", (_, window) => optimizer.watchWindowShortcuts(window));
 
-        registerIpcHandlers();
+        registerIPCHandler();
         await createIsland();
     });
 }
@@ -51,6 +51,7 @@ async function createIsland() {
     island.setAlwaysOnTop(true, "pop-up-menu");
     island.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
+    // @todo @todo @todo @todo @todo @todo
     ipcMain.handle("island:expand", () => {
         // island.setBounds(expandedBounds) // @todo
         island.setBounds({
@@ -62,7 +63,13 @@ async function createIsland() {
     ipcMain.handle("island:collapse", () => island.setBounds(collapsedBounds));
     island.on("ready-to-show", () => {
         island.setPosition(collapsedRect.x, 0);
-        island.setBounds(collapsedBounds);
+        // @todo
+        // island.setBounds(collapsedBounds);
+        island.setBounds({
+            ...expandedBounds,
+            x: expandedBounds.x * 2,
+            y: expandedBounds.height,
+        });
         island.show();
     });
 

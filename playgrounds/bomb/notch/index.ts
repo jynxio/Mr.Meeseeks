@@ -41,9 +41,7 @@ function runSwiftCode(swiftCode: string) {
 
     child.stdout.setEncoding("utf-8").on("data", (d: string) => (out += d));
     child.on("error", () => resolve([false]));
-    child.on("close", (code: number | null) =>
-        code === 0 ? resolve([true, out]) : resolve([false]),
-    );
+    child.on("close", (code: number | null) => (code === 0 ? resolve([true, out]) : resolve([false])));
     child.stdin.end(swiftCode);
 
     return promise;

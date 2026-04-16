@@ -11,8 +11,7 @@
     --shrink: calc(1 - var(--scale));
     --height: var(--toast-frontmost-height, var(--toast-height));
     --offset-y: calc(
-        var(--toast-offset-y) * -1 + (var(--toast-index) * var(--gap) * -1) +
-            var(--toast-swipe-movement-y)
+        var(--toast-offset-y) * -1 + (var(--toast-index) * var(--gap) * -1) + var(--toast-swipe-movement-y)
     );
 
     z-index: calc(1000 - var(--toast-index));
@@ -60,13 +59,11 @@
         }
 
         &[data-swipe-direction="left"] {
-            transform: translateX(calc(var(--toast-swipe-movement-x) - 150%))
-                translateY(var(--offset-y));
+            transform: translateX(calc(var(--toast-swipe-movement-x) - 150%)) translateY(var(--offset-y));
         }
 
         &[data-swipe-direction="right"] {
-            transform: translateX(calc(var(--toast-swipe-movement-x) + 150%))
-                translateY(var(--offset-y));
+            transform: translateX(calc(var(--toast-swipe-movement-x) + 150%)) translateY(var(--offset-y));
         }
 
         &[data-swipe-direction="down"] {

@@ -1,56 +1,55 @@
 import React from "react";
-import { ipc } from "./ipc";
-import { useQuery } from "@tanstack/react-query";
-import { ApiKeySettings } from "./api-key-settings";
+import { ipcInvoker } from "../_ipc";
+import { APIKeySettings } from "./api-key-settings";
+import { useUserSettings } from "../_hooks/use-user-settings";
+import { useTranslation } from "../_hooks/use-translation";
 
 function App() {
-    const [txt, setTxt] = React.useState("");
-    const [submittedTxt, setSubmittedTxt] = React.useState("");
+    const [input, setInput] = React.useState("");
 
-    const { data: apiKey } = useQuery({
-        queryKey: ["get-api-key"],
-        queryFn: () => ipc.getApiKey(),
-    });
+    const userSettings = useUserSettings();
+    const translationQuery = useTranslation().query;
 
-    const { data, status } = useQuery({
-        enabled: !!submittedTxt,
-        queryKey: ["translate", submittedTxt],
-        queryFn: () => ipc.translate(submittedTxt),
-    });
+    const apiKey = userSettings.list.data?.apiKey;
+    const canSubmit = Boolean(apiKey) && translationQuery.status !== "pending";
+
+    const result = JSON.stringify(
+        {
+            "API Key": apiKey,
+            "Translation State": translationQuery.status,
+            "Translation Result": translationQuery.data,
+        },
+        null,
+        2,
+    );
 
     useExpansion();
 
-    console.log("data: ", data, "apiKey: ", apiKey);
-
     return (
         <div>
-            <ApiKeySettings />
+            <APIKeySettings />
 
             <hr />
-
             <form onSubmit={onSubmit}>
-                <input
-                    disabled={!apiKey}
-                    value={txt}
-                    onChange={(event) => setTxt(event.target.value)}
-                />
+                <fieldset disabled={!canSubmit}>
+                    <input value={input} onChange={(event) => setInput(event.target.value)} />
+                </fieldset>
             </form>
 
             <hr />
-
-            <pre>{JSON.stringify({ status, data }, null, 4)}</pre>
+            <pre>{result}</pre>
         </div>
     );
 
     function onSubmit(event: React.SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
-        setSubmittedTxt(txt);
+        translationQuery.mutate(input);
     }
 }
 
 function useExpansion() {
     React.useEffect(() => {
-        void ipc.expandIsland();
+        void ipcInvoker["appearance:expand-island"]();
     }, []);
 }
 

@@ -109,9 +109,7 @@ export function serialize(params: Record<string, unknown>): string {
             }
         } else {
             const str =
-                value instanceof Date
-                    ? value.toISOString()
-                    : String(value as string | number | boolean);
+                value instanceof Date ? value.toISOString() : String(value as string | number | boolean);
             parts.push(`${encodeURIComponent(prefix)}=${encodeURIComponent(str)}`);
         }
     }
@@ -168,8 +166,7 @@ export function createFetchClient(config: FetchClientConfig = {}) {
     } = config;
 
     function resolveURL(rc: ReqConfig): string {
-        const raw =
-            rc.baseURL ?? (typeof cfgBaseURL === "function" ? cfgBaseURL() : cfgBaseURL) ?? "";
+        const raw = rc.baseURL ?? (typeof cfgBaseURL === "function" ? cfgBaseURL() : cfgBaseURL) ?? "";
         const base = raw.endsWith("/") ? raw : `${raw}/`;
         const url = new URL(rc.url, base);
         if (rc.params) url.search = serialize(rc.params);
@@ -257,9 +254,7 @@ export function createFetchClient(config: FetchClientConfig = {}) {
         } catch (e) {
             cleanup();
             const msg =
-                e instanceof DOMException && e.name === "AbortError"
-                    ? "Request timeout"
-                    : "Network error";
+                e instanceof DOMException && e.name === "AbortError" ? "Request timeout" : "Network error";
             const error = new FetchError(msg, { data: e });
             await hooks.onError?.({ error, response: undefined, request: ctx });
             return { ok: false, error };
@@ -290,8 +285,7 @@ export function createFetchClient(config: FetchClientConfig = {}) {
 
         // Binary
         if (rc.responseType === "blob") return { ok: true, data: (await response.blob()) as R };
-        if (rc.responseType === "arraybuffer")
-            return { ok: true, data: (await response.arrayBuffer()) as R };
+        if (rc.responseType === "arraybuffer") return { ok: true, data: (await response.arrayBuffer()) as R };
 
         // 204
         if (response.status === 204) return { ok: true, data: "" as R };

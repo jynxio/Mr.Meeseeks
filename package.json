@@ -9,11 +9,14 @@
         "dev:ui": "vp run ui-playground#dev",
         "build:ui": "vp run ui#build",
         "check:ui": "vp run ui#check",
-        "prepare": "vp config"
+        "prepare": "vp config",
+        "lint:ts": "tsc --build --noEmit"
     },
     "dependencies": {
+        "@ai-sdk/google": "catalog:",
         "@tanstack/react-query": "catalog:",
-        "arktype": "catalog:"
+        "arktype": "catalog:",
+        "nanoid": "catalog:"
     },
     "devDependencies": {
         "type-fest": "catalog:",
