@@ -14,9 +14,14 @@
     },
     "dependencies": {
         "@ai-sdk/google": "catalog:",
-        "@tanstack/react-query": "catalog:",
-        "arktype": "catalog:",
-        "nanoid": "catalog:"
+        "@ai-sdk/openai-compatible": "catalog:",
+        "immer": "catalog:",
+        "nanoid": "catalog:",
+        "nanostores": "catalog:",
+        "remeda": "catalog:",
+        "swr": "catalog:",
+        "ts-pattern": "catalog:",
+        "use-immer": "catalog:"
     },
     "devDependencies": {
         "type-fest": "catalog:",

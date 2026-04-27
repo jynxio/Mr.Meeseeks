@@ -1,40 +1,39 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useSWR, { useSWRConfig } from "swr";
+import useSWRMutation from "swr/mutation";
 import { ipcInvoker } from "../_ipc";
 import type { Word } from "@/_consts/schemas";
 
-const LIST_QUERY_KEYS = [Symbol()];
+const LIST_KEY = "translation:list";
 
 function useTranslation() {
-    const queryClient = useQueryClient();
+    const { mutate } = useSWRConfig();
 
     function invalidateList() {
-        return queryClient.invalidateQueries({ queryKey: LIST_QUERY_KEYS });
+        void mutate(LIST_KEY);
     }
 
-    const list = useQuery({
-        queryKey: LIST_QUERY_KEYS,
-        queryFn: () => ipcInvoker["translation:list"](),
-    });
+    const list = useSWR(LIST_KEY, () => ipcInvoker["translation:list"]());
 
-    const set = useMutation({
-        mutationFn: ({ id, value }: { id: Word["id"]; value: Word }) =>
+    const set = useSWRMutation(
+        "translation:set",
+        (_key: string, { arg: { id, value } }: { arg: { id: Word["id"]; value: Word } }) =>
             ipcInvoker["translation:set"](id, value),
+        { onSuccess: invalidateList },
+    );
+
+    const del = useSWRMutation(
+        "translation:del",
+        (_key: string, { arg }: { arg: Word["id"] }) => ipcInvoker["translation:del"](arg),
+        { onSuccess: invalidateList },
+    );
+
+    const clear = useSWRMutation("translation:clear", () => ipcInvoker["translation:clear"](), {
         onSuccess: invalidateList,
     });
 
-    const del = useMutation({
-        mutationFn: (id: Word["id"]) => ipcInvoker["translation:del"](id),
-        onSuccess: invalidateList,
-    });
-
-    const clear = useMutation({
-        mutationFn: () => ipcInvoker["translation:clear"](),
-        onSuccess: invalidateList,
-    });
-
-    const query = useMutation({
-        mutationFn: (sourceText: string) => ipcInvoker["translation:query"](sourceText),
-    });
+    const query = useSWRMutation("translation:query", (_key: string, { arg }: { arg: string }) =>
+        ipcInvoker["translation:query"](arg),
+    );
 
     return { list, set, del, clear, query };
 }

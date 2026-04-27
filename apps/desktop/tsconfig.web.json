@@ -7,9 +7,10 @@
         "src/preload/*.d.ts",
         "src/_utils/**/*",
         "src/_consts/**/*",
-        "src/_services/common/**/*",
+        "src/_services/both-process/**/*",
         "src/_services/renderer-process/**/*",
-        "reset.d.ts"
+        "reset.d.ts",
+        "src/main/_auth/copilot"
     ],
     "compilerOptions": {
         "composite": true,

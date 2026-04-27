@@ -1,14 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
+import useSWRMutation from "swr/mutation";
 import { ipcInvoker } from "../_ipc";
 
 function useAppearance() {
-    const expandIsland = useMutation({
-        mutationFn: () => ipcInvoker["appearance:expand-island"](),
-    });
+    const expandIsland = useSWRMutation("appearance:expand-island", () =>
+        ipcInvoker["appearance:expand-island"](),
+    );
 
-    const collapseIsland = useMutation({
-        mutationFn: () => ipcInvoker["appearance:collapse-island"](),
-    });
+    const collapseIsland = useSWRMutation("appearance:collapse-island", () =>
+        ipcInvoker["appearance:collapse-island"](),
+    );
 
     return { expandIsland, collapseIsland };
 }

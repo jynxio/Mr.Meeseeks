@@ -7,8 +7,8 @@
         "src/preload/*.d.ts",
         "src/_utils/**/*",
         "src/_consts/**/*",
-        "src/_services/common/**/*",
-        "src/_services/main-process/**/*",
+        "src/_services/both-process/**/*",
+        "src/main/_services/**/*",
         "reset.d.ts"
     ],
     "compilerOptions": {

@@ -5,7 +5,7 @@ function APIKeySettings() {
     const [input, setInput] = React.useState("");
     const { list, set, del } = useUserSettings();
 
-    const isPending = list.isPending || set.isPending || del.isPending;
+    const isPending = list.isLoading || set.isMutating || del.isMutating;
 
     return (
         <form onSubmit={onSubmit}>
@@ -18,8 +18,8 @@ function APIKeySettings() {
     function onSubmit(event: React.SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        if (input) set.mutate({ key: "apiKey", value: input });
-        else del.mutate("apiKey");
+        if (input) void set.trigger({ key: "googleApiKey", value: input });
+        else void del.trigger("googleApiKey");
     }
 }
 

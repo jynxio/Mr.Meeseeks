@@ -1,23 +1,21 @@
 import { spawn } from "node:child_process";
-import { type } from "arktype";
+import { z } from "zod";
 
-const Rect = type({ x: "number", y: "number", w: "number", h: "number" });
-const SafeAreaInsets = type({ t: "number", l: "number", b: "number", r: "number" });
-const Screen = type({
+const Rect = z.object({ x: z.number(), y: z.number(), w: z.number(), h: z.number() });
+const SafeAreaInsets = z.object({ t: z.number(), l: z.number(), b: z.number(), r: z.number() });
+const Screen = z.object({
     frame: Rect,
     safeAreaInsets: SafeAreaInsets,
     auxiliaryTopLeftArea: Rect,
     auxiliaryTopRightArea: Rect,
 });
 
-console.log(await getNotch());
-
-async function getNotch(): Promise<typeof Rect.infer | undefined> {
+async function getNotch(): Promise<z.infer<typeof Rect> | undefined> {
     const [isOk, rawData] = await runSwiftCode(getSwiftCode());
     if (!isOk) return undefined;
 
     try {
-        const screen = Screen.assert(JSON.parse(rawData.trim()));
+        const screen = Screen.parse(JSON.parse(rawData.trim()));
 
         const notchLeftMargin = screen.auxiliaryTopLeftArea.w;
         const notchRightMargin = screen.auxiliaryTopRightArea.w;
@@ -110,3 +108,5 @@ do {
 }
 `;
 }
+
+export { getNotch };

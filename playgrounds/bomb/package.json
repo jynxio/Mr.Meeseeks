@@ -6,7 +6,7 @@
         "notch": "node ./notch/index.ts"
     },
     "dependencies": {
-        "arktype": "catalog:"
+        "zod": "catalog:"
     },
     "devDependencies": {
         "@types/node": "catalog:",

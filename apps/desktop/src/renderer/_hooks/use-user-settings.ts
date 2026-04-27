@@ -1,39 +1,38 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useSWR, { useSWRConfig } from "swr";
+import useSWRMutation from "swr/mutation";
 import { ipcInvoker } from "../_ipc";
 import type { UserSettings } from "@/_consts/schemas";
 
-const LIST_QUERY_KEYS = [Symbol()];
+const LIST_KEY = "user-settings:list";
 
 function useUserSettings() {
-    const queryClient = useQueryClient();
+    const { mutate } = useSWRConfig();
 
-    const list = useQuery({
-        queryKey: LIST_QUERY_KEYS,
-        queryFn: () => ipcInvoker["user-settings:list"](),
-    });
+    const list = useSWR(LIST_KEY, () => ipcInvoker["user-settings:list"]());
 
     type SetProps<T extends keyof UserSettings = keyof UserSettings> = T extends never
         ? never
         : { key: T; value: NonNullable<UserSettings[T]> };
-    const set = useMutation({
-        mutationFn: (props: SetProps) => ipcInvoker["user-settings:set"](props.key, props.value),
-        onSuccess: invalidate,
-    });
+    const set = useSWRMutation(
+        "user-settings:set",
+        (_key: string, { arg }: { arg: SetProps }) => ipcInvoker["user-settings:set"](arg.key, arg.value),
+        { onSuccess: invalidate },
+    );
 
-    const del = useMutation({
-        mutationFn: (key: keyof UserSettings) => ipcInvoker["user-settings:del"](key),
-        onSuccess: invalidate,
-    });
+    const del = useSWRMutation(
+        "user-settings:del",
+        (_key: string, { arg }: { arg: keyof UserSettings }) => ipcInvoker["user-settings:del"](arg),
+        { onSuccess: invalidate },
+    );
 
-    const clear = useMutation({
-        mutationFn: () => ipcInvoker["user-settings:clear"](),
+    const clear = useSWRMutation("user-settings:clear", () => ipcInvoker["user-settings:clear"](), {
         onSuccess: invalidate,
     });
 
     return { list, set, del, clear };
 
     function invalidate() {
-        return queryClient.invalidateQueries({ queryKey: LIST_QUERY_KEYS });
+        void mutate(LIST_KEY);
     }
 }
 

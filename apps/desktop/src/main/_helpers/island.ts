@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { type } from "arktype";
+import { z } from "zod";
 import { screen } from "electron";
 
 const EXPANDED_W = 300;
@@ -16,12 +16,12 @@ const FALLBACK_COLLAPSED_H = 32;
  */
 const NOTCH_GAP = 3;
 
-const RectSchema = type({ x: "number", y: "number", w: "number", h: "number" });
-const ScreenSpecSchema = type({
+const RectSchema = z.object({ x: z.number(), y: z.number(), w: z.number(), h: z.number() });
+const ScreenSpecSchema = z.object({
     frame: RectSchema,
     auxiliaryTopLeftArea: RectSchema,
     auxiliaryTopRightArea: RectSchema,
-    safeAreaInsets: type({ t: "number", l: "number", b: "number", r: "number" }),
+    safeAreaInsets: z.object({ t: z.number(), l: z.number(), b: z.number(), r: z.number() }),
 });
 
 async function getIslandRect() {
@@ -71,7 +71,7 @@ async function getScreenSpec() {
         const swiftStdout = await runSwiftCode(getSwiftCode());
         const stdout = JSON.parse(swiftStdout?.trim() ?? "");
 
-        return ScreenSpecSchema.assert(stdout);
+        return ScreenSpecSchema.parse(stdout);
     } catch {
         const { x, y, width, height } = screen.getPrimaryDisplay().bounds;
 
@@ -158,7 +158,7 @@ do {
 `;
 }
 
-function toBounds({ w, h, x, y }: typeof RectSchema.infer) {
+function toBounds({ w, h, x, y }: z.infer<typeof RectSchema>) {
     return { width: w, height: h, x, y };
 }
 
