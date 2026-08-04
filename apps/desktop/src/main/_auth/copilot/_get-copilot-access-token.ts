@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { REVERSE_COPILOT_API } from "./_consts";
 
 const originalSchema = z.object({ token: z.string(), expires_at: z.number() });

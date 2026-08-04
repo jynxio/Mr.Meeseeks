@@ -1,9 +1,10 @@
 import { defineConfig } from "vite-plus";
+
 import rootConfig from "../../vite.config.ts";
 
 export default defineConfig({
-    fmt: rootConfig.fmt,
-    lint: rootConfig.lint,
+    ...(rootConfig.fmt === undefined ? {} : { fmt: rootConfig.fmt }),
+    ...(rootConfig.lint === undefined ? {} : { lint: rootConfig.lint }),
 
     pack: {
         exports: true,

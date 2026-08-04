@@ -1,7 +1,9 @@
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
-import { ipcInvoker } from "../_ipc";
+
 import type { UserSettings } from "@/_consts/schemas";
+
+import { ipcInvoker } from "../_ipc";
 
 const LIST_KEY = "user-settings:list";
 

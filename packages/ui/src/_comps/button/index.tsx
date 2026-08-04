@@ -1,7 +1,7 @@
-import css from "./_index.module.css";
+import * as $ from "@base-ui/react/button";
 
 import { mergeClassNames } from "../../_utils";
-import * as $ from "@base-ui/react/button";
+import css from "./_index.module.css";
 
 function Button(props: $.ButtonProps) {
     return <$.Button {...props} className={mergeClassNames(props.className, css["root"])} />;

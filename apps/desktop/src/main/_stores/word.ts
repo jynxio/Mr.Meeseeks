@@ -1,6 +1,8 @@
 import Store from "electron-store";
-import { STORE_KEY } from "@/main/_consts";
+
 import type { Word } from "@/_consts/schemas";
+
+import { STORE_KEY } from "@/main/_consts";
 
 const store = new Store<{ records: Word[] }>({
     name: STORE_KEY["TRANSLATION_WORDS"],

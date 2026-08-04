@@ -42,6 +42,10 @@ const _IPC_HANDLER_LIST = [
     ["copilot-auth:cancel-or-sign-out", {} as () => void],
     ["copilot-auth:validate-user-code", {} as () => void],
     ["copilot-auth:retrieve-user-code", {} as () => Promise<{ userCode: string; verificationURI: string }>],
+    ["chatgpt-auth:get-state", {} as () => { isAuth: boolean }],
+    ["chatgpt-auth:cancel-or-sign-out", {} as () => void],
+    ["chatgpt-auth:validate-user-code", {} as () => void],
+    ["chatgpt-auth:retrieve-user-code", {} as () => Promise<{ userCode: string; verificationURI: string }>],
 ] as const;
 
 // @todo

@@ -3,7 +3,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vp dev"
+        "dev": "vp dev",
+        "verify:type": "vp exec tsc --noEmit -p tsconfig.json"
     },
     "dependencies": {
         "react": "catalog:",

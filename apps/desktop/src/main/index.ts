@@ -1,5 +1,6 @@
-import { app, BrowserWindow, globalShortcut } from "electron";
 import { electronApp, optimizer } from "@electron-toolkit/utils";
+import { app, BrowserWindow, globalShortcut } from "electron";
+
 import { registerIPCHandler } from "./_ipc";
 import { openIslandWindow } from "./windows/island";
 

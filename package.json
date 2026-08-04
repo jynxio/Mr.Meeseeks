@@ -3,14 +3,14 @@
     "version": "0.1.0",
     "type": "module",
     "scripts": {
-        "ready": "vp fmt && vp lint && vp run test -r && vp run build -r",
-        "bomb:notch": "vp run bomb#notch",
         "dev:app": "vp run app#dev",
         "dev:ui": "vp run ui-playground#dev",
+        "build:app": "vp run app#build",
         "build:ui": "vp run ui#build",
-        "check:ui": "vp run ui#check",
-        "prepare": "vp config",
-        "lint:ts": "tsc --build --noEmit"
+        "verify": "vp fmt && vp lint && vp run -r test && vp run -r build",
+        "verify:code": "vp check --fix",
+        "verify:type": "vp exec tsc --noEmit -p tsconfig.json && vp run --filter \"./apps/*\" --filter \"./packages/*\" --filter \"./playgrounds/*\" verify:type",
+        "prepare": "vp config"
     },
     "dependencies": {
         "@ai-sdk/google": "catalog:",

@@ -1,9 +1,11 @@
-import { getGithubDeviceFlow } from "./_get-github-device-flow";
+import { pick } from "remeda";
+
+import { sleep } from "@/_utils";
+import { llmProvidersStore } from "@/main/_stores/llm-providers";
+
 import { getCopilotAccessToken } from "./_get-copilot-access-token";
 import { getGithubAccessToken } from "./_get-github-access-token";
-import { llmProvidersStore } from "@/main/_stores/llm-providers";
-import { pick } from "remeda";
-import { sleep } from "@/_utils";
+import { getGithubDeviceFlow } from "./_get-github-device-flow";
 
 let abortController = new AbortController();
 let interval: undefined | number = undefined;

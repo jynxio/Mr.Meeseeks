@@ -1,7 +1,9 @@
 import Store from "electron-store";
+
+import type { UserSettings } from "@/_consts/schemas";
+
 import { STORE_KEY } from "@/main/_consts";
 import { decryptString, encryptString } from "@/main/_helpers/secure";
-import type { UserSettings } from "@/_consts/schemas";
 
 // @todo
 type PersistedShape = {

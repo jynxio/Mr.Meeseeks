@@ -1,8 +1,11 @@
 import { ipcMain } from "electron";
+
 import { IPC } from "@/_consts";
+import { translate } from "@/main/_services/translate";
 import * as userSettingsStore from "@/main/_stores/user-settings";
 import * as translationStore from "@/main/_stores/word";
-import { translate } from "@/main/_services/translate";
+
+import * as chatGPTAuth from "./_auth/chatgpt";
 import * as copilotAuth from "./_auth/copilot";
 import { openSettingsWindow } from "./windows/settings";
 
@@ -43,6 +46,10 @@ const ipcHandler = {
     "copilot-auth:cancel-or-sign-out": copilotAuth.cancelOrSignOut,
     "copilot-auth:retrieve-user-code": copilotAuth.retrieveUserCode,
     "copilot-auth:validate-user-code": copilotAuth.validateUserCode,
+    "chatgpt-auth:get-state": chatGPTAuth.getState,
+    "chatgpt-auth:cancel-or-sign-out": chatGPTAuth.cancelOrSignOut,
+    "chatgpt-auth:retrieve-user-code": chatGPTAuth.retrieveUserCode,
+    "chatgpt-auth:validate-user-code": chatGPTAuth.validateUserCode,
 } satisfies (typeof IPC)["infer"]["handler"];
 
 function registerIPCHandler() {

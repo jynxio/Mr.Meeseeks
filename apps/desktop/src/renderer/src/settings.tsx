@@ -1,5 +1,7 @@
 import React from "react";
+
 import { useTranslation } from "../_hooks/use-translation";
+import { ChatGPTAuth } from "./chatgpt-auth";
 import { CopilotAuth } from "./copilot-auth";
 
 function Settings() {
@@ -10,6 +12,7 @@ function Settings() {
     return (
         <div>
             <CopilotAuth />
+            <ChatGPTAuth />
             <form onSubmit={onSubmit}>
                 <input value={input} onChange={(event) => setInput(event.target.value)} />
             </form>

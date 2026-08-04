@@ -1,7 +1,8 @@
-import { BrowserWindow } from "electron";
 import { is } from "@electron-toolkit/utils";
-import { getIslandRect, toBounds } from "../_helpers/island";
+import { BrowserWindow } from "electron";
+
 import { RENDERER_URL, PRELOAD_FILE, RENDERER_FILE } from "../_consts";
+import { getIslandRect, toBounds } from "../_helpers/island";
 
 let islandWindow: undefined | BrowserWindow;
 

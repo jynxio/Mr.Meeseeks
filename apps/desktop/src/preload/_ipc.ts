@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron";
+
 import { IPC } from "@/_consts";
 
 function exposeIPCInvoker() {

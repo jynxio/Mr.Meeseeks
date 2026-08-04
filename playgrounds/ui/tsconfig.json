@@ -11,6 +11,10 @@
         "isolatedModules": true,
         "jsx": "react-jsx",
         "types": ["vite/client"],
+        "paths": {
+            "ui": ["../../packages/ui/src/index.ts"],
+            "ui/style.css": ["../../packages/ui/src/style.css"]
+        },
 
         "noEmit": true,
         "incremental": true,
@@ -18,9 +22,12 @@
         "removeComments": true,
 
         "strict": true,
+        "exactOptionalPropertyTypes": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "noImplicitReturns": true,
         "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
         "noUncheckedIndexedAccess": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,

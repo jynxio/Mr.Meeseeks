@@ -1,7 +1,8 @@
 import { Route, Router, Switch } from "wouter";
 import { useHashLocation } from "wouter/use-hash-location";
-import { Settings } from "./settings";
+
 import { Island } from "./island";
+import { Settings } from "./settings";
 
 function App() {
     return (

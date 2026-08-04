@@ -3,7 +3,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "notch": "node ./notch/index.ts"
+        "notch": "node ./notch/index.ts",
+        "verify:type": "vp exec tsc --noEmit -p tsconfig.json"
     },
     "dependencies": {
         "zod": "catalog:"

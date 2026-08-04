@@ -1,7 +1,7 @@
-import css from "./_index.module.css";
+import * as $ from "@base-ui/react/toast";
 
 import { mergeClassNames } from "../../_utils";
-import * as $ from "@base-ui/react/toast";
+import css from "./_index.module.css";
 
 const Toast = { ...$.Toast, Root, Title, Content, Viewport, Description } as (typeof $)["Toast"];
 

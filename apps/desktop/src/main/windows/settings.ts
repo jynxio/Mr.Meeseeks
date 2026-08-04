@@ -1,5 +1,6 @@
-import { BrowserWindow } from "electron";
 import { is } from "@electron-toolkit/utils";
+import { BrowserWindow } from "electron";
+
 import { RENDERER_URL, PRELOAD_FILE, RENDERER_FILE } from "../_consts";
 
 let settingsWindow: undefined | BrowserWindow;

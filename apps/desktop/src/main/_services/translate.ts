@@ -1,8 +1,10 @@
-import { randomUUID } from "node:crypto";
-import { Output, generateText } from "ai";
-import { z } from "zod";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { Output, generateText } from "ai";
+import { randomUUID } from "node:crypto";
+import { z } from "zod";
+
 import type { Translation, UserSettings } from "@/_consts/schemas";
+
 import { REVERSE_COPILOT_API } from "@/main/_auth/copilot/_consts";
 import { llmProvidersStore } from "@/main/_stores/llm-providers";
 
@@ -31,6 +33,8 @@ async function translate(props: TranslateProps): Promise<Translation | undefined
 
 async function translateViaCopilot({ sourceText }: TranslateProps): Promise<Translation | undefined> {
     const token = llmProvidersStore.get("copilot")?.copilotToken;
+    if (token === undefined) return undefined;
+
     const copilot = createOpenAICompatible({
         name: "copilot",
         baseURL: REVERSE_COPILOT_API.API_BASE,

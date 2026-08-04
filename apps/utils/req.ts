@@ -1,9 +1,10 @@
 import type { AuthConfig } from "./auth";
+import type { RetryConfig } from "./retry";
+import type { StandardSchema, InferOutput } from "./standard-schema";
+
 import { resolveAuthHeader } from "./auth";
 import { FetchError } from "./http-error";
-import type { RetryConfig } from "./retry";
 import { resolveRetry } from "./retry";
-import type { StandardSchema, InferOutput } from "./standard-schema";
 import { parseSchema } from "./standard-schema";
 
 export type RequestContext = {

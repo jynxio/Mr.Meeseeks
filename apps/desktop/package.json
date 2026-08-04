@@ -6,16 +6,16 @@
     "main": "./out/main/index.js",
     "scripts": {
         "dev": "electron-vite dev",
-        "build": "vp run typecheck && electron-vite build",
         "start": "electron-vite preview",
-        "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
-        "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
-        "typecheck": "vp run typecheck:node && vp run typecheck:web",
-        "postinstall": "electron-builder install-app-deps",
+        "build": "vp run verify:type && electron-vite build",
         "build:unpack": "vp run build && electron-builder --dir",
         "build:win": "vp run build && electron-builder --win",
         "build:mac": "vp run build && electron-builder --mac",
-        "build:linux": "vp run build && electron-builder --linux"
+        "build:linux": "vp run build && electron-builder --linux",
+        "verify:type": "vp run verify:type:node && vp run verify:type:web",
+        "verify:type:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+        "verify:type:web": "tsc --noEmit -p tsconfig.web.json --composite false",
+        "postinstall": "electron-builder install-app-deps"
     },
     "dependencies": {
         "@ai-sdk/gateway": "catalog:",

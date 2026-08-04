@@ -1,6 +1,6 @@
+import { screen } from "electron";
 import { spawn } from "node:child_process";
 import { z } from "zod";
-import { screen } from "electron";
 
 const EXPANDED_W = 300;
 const EXPANDED_H = 400;
