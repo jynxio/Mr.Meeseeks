@@ -1,0 +1,4 @@
+[alias]
+dev = "run --features dev"
+build = "build --release"
+lint = "clippy --all-targets --all-features -- -D warnings"

@@ -1,0 +1,22 @@
+[package]
+name = "meeseeks"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+dev = []
+
+[dependencies]
+directories = "6.0.0"
+dotenvy = "0.15"
+futures = "0.3"
+genai = "0.6"
+reqwest = { version = "0.13", default-features = false, features = ["rustls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+toml = { version = "0.9", default-features = false, features = [
+    "parse",
+    "serde",
+    "std",
+] }
