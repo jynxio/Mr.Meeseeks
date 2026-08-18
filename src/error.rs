@@ -1,5 +1,5 @@
 #[derive(Debug, thiserror::Error)]
-pub(super) enum Error {
+pub(crate) enum Error {
     #[error("@todo")]
     Transport(#[from] reqwest::Error),
 

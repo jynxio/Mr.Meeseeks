@@ -1,5 +1,3 @@
-use super::app::Error as AppError;
-
 use reqwest::{Client, StatusCode};
 use serde::Deserialize;
 use serde_json::json;
@@ -16,12 +14,13 @@ const ACCESS_TOKEN_URL: &str = "https://auth.openai.com/oauth/token";
 
 #[derive(Debug, Deserialize)]
 pub(super) struct DeviceAuth {
+    #[serde(deserialize_with = "crate::de::u64_from_str")]
     pub(super) interval: u64,
     pub(super) user_code: String,
     pub(super) device_auth_id: String,
 }
 
-pub(super) async fn req_device_auth(http: &Client) -> Result<DeviceAuth, AppError> {
+pub(super) async fn req_device_auth(http: &Client) -> Result<DeviceAuth, crate::error::Error> {
     let req_body = json!({ "client_id": CLIENT_ID });
     let res = http.post(DEVICE_AUTH_URL).json(&req_body).send().await?;
     let res = res.error_for_status()?;
@@ -48,7 +47,7 @@ pub(super) async fn poll_auth_code(
     interval: u64,
     user_code: &str,
     device_auth_id: &str,
-) -> Result<AuthCode, AppError> {
+) -> Result<AuthCode, crate::error::Error> {
     enum Poll<T> {
         Pending,
         Ready(T),
@@ -68,12 +67,12 @@ pub(super) async fn poll_auth_code(
         // Timed out
         let elapsed_time = start.elapsed();
         if elapsed_time >= timeout {
-            return Err(AppError::AuthTimedOut);
+            return Err(crate::error::Error::AuthTimedOut);
         }
 
         let sleep_time = Duration::from_secs(interval);
         if sleep_time >= timeout - elapsed_time {
-            return Err(AppError::AuthTimedOut);
+            return Err(crate::error::Error::AuthTimedOut);
         }
 
         // Retry delay
@@ -84,7 +83,7 @@ pub(super) async fn poll_auth_code(
         http: &Client,
         user_code: &str,
         device_auth_id: &str,
-    ) -> Result<Poll<AuthCode>, AppError> {
+    ) -> Result<Poll<AuthCode>, crate::error::Error> {
         let req_body = json!({ "user_code": user_code, "device_auth_id": device_auth_id, });
         let res = http.post(AUTH_CODE_URL).json(&req_body).send().await?;
         let status = res.status();
@@ -96,7 +95,7 @@ pub(super) async fn poll_auth_code(
 
         // Rejected
         if !status.is_success() {
-            return Err(AppError::AuthDenied);
+            return Err(crate::error::Error::AuthDenied);
         }
 
         // Fulfilled
@@ -115,7 +114,7 @@ pub(super) async fn req_access_token(
     http: &Client,
     auth_code: &str,
     code_verifier: &str,
-) -> Result<AccessToken, AppError> {
+) -> Result<AccessToken, crate::error::Error> {
     let input = [
         ("grant_type", "authorization_code"),
         ("code", auth_code),
