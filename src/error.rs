@@ -17,4 +17,10 @@ pub(crate) enum Error {
 
     #[error("@todo")]
     Expired,
+
+    #[error("@todo")]
+    Credential,
+
+    #[error("@todo")]
+    FileOperation,
 }

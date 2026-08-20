@@ -1,5 +1,5 @@
 use reqwest::{Client, StatusCode};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::time::{Duration, Instant};
 
@@ -103,7 +103,7 @@ pub(super) async fn poll_auth_code(
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub(super) struct AccessToken {
     pub(super) id_token: String,
     pub(super) access_token: String,

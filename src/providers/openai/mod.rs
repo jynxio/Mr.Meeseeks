@@ -1,6 +1,6 @@
 mod auth;
 
-pub async fn login() -> Result<(), crate::error::Error> {
+pub async fn login() -> Result<(), anyhow::Error> {
     let http = crate::http::new()?;
 
     // Device auth request
@@ -22,5 +22,12 @@ pub async fn login() -> Result<(), crate::error::Error> {
     let access_token =
         auth::req_access_token(&http, &auth_code.authorization_code, &auth_code.code_verifier).await?;
 
+    // Access token persist
+    let plaintext = serde_json::to_vec(&access_token)?;
+    let provider = crate::consts::ModelProvider::OpenAI.as_ref();
+
+    super::credentials::set(provider, &plaintext)?;
+
+    // Done
     Ok(())
 }
